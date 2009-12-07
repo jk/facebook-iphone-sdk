@@ -18,6 +18,7 @@
 
 @protocol FBSessionDelegate;
 @class FBRequest;
+@class FBUser;
 
 /**
  * An FBSession represents a single user's authenticated session for a Facebook application.  
@@ -44,6 +45,7 @@
   NSDate* _lastRequestTime;
   int _requestBurstCount;
   NSTimer* _requestTimer;
+  FBUser* _user;
 }
 
 /**
@@ -82,6 +84,11 @@
  * The current user's Facebook id.
  */
 @property(nonatomic,readonly) FBUID uid;
+
+/**
+ * The current Facebook user.
+ */
+@property(nonatomic,readonly) FBUser* user;
 
 /**
  * The current user's session key.
@@ -151,6 +158,12 @@
  */
 - (void)begin:(FBUID)uid sessionKey:(NSString*)sessionKey sessionSecret:(NSString*)sessionSecret
   expires:(NSDate*)expires;
+
+/**
+ * Resumes a previous session whose uid, session key, and secret are cached on disk. Also, query the server
+ * for the user record information.
+ */
+- (BOOL)resumeWithUser:(BOOL)withUser;
 
 /**
  * Resumes a previous session whose uid, session key, and secret are cached on disk.

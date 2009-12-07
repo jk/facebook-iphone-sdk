@@ -6,7 +6,8 @@
 //  Copyright 2009 ngmoco:). All rights reserved.
 //
 
-#import "FBUser.h"
+#import "FBConnect/FBUser.h"
+#import "FBConnect/FBSession.h"
 
 static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_small, is_app_user, username, proxied_email from user where uid";
 
@@ -23,17 +24,30 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
 @synthesize first_name, last_name, name, username, pic_small, email;
 @synthesize friends;
 
+enum REQUEST_TYPE {
+    INIT_REQUEST,
+    FRIEND_REQUEST
+};
+
 - (FBUser *) initWithUID:(FBUID)userid session:(FBSession *)session andDelegate:(id<FBRequestDelegate>)delegate {
-    NSLog(@"FBUser uid: %@", userid);
+//    NSLog(@"FBUser uid: %i", userid);
     if (self = [super init]) {
         uid = [[NSNumber numberWithLongLong:userid] retain];
-        NSString* fql = [NSString stringWithFormat:@"%s = %i", userFQL, uid];
+        NSString* fql = [NSString stringWithFormat:@"%@ = %i", userFQL, userid];
+//        NSLog(@"FBUser query: %@", fql);
         NSDictionary* params = [NSDictionary dictionaryWithObject:fql forKey:@"query"];
-        [[FBRequest requestWithSession:session delegate:self] call:@"facebook.fql.query" params:params];
+        FBRequest *request = [FBRequest requestWithSession:session delegate:self];
+        request.userInfo = self;
+        [request call:@"facebook.fql.query" params:params];
         _delegate = delegate;
+        _request  = INIT_REQUEST;
     }
     
     return self;
+}
+
++ (FBUser *) userForSession:(FBSession *)session andDelegate:(id<FBRequestDelegate>)delegate {
+    return [[[FBUser alloc] initWithUID:session.uid session:session andDelegate:delegate] autorelease];
 }
 
 - (FBUser *) initWithDictionary:(NSDictionary *)data {
@@ -81,10 +95,11 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
 }
 
 - (void) requestFriends:(FBSession *)session withDelegate:(id<FBRequestDelegate>)delegate {
-    NSString* fql = [NSString stringWithFormat:@"%s in (select uid2 from friend where uid1 = %i)", userFQL, uid];
+    NSString* fql = [NSString stringWithFormat:@"%@ in (select uid2 from friend where uid1 = %i)", userFQL, uid];
     NSDictionary* params = [NSDictionary dictionaryWithObject:fql forKey:@"query"];
     [[FBRequest requestWithSession:session delegate:self] call:@"facebook.fql.query" params:params];
     _delegate = delegate;
+    _request  = FRIEND_REQUEST;
 }
 
 - (void) dealloc {
@@ -122,7 +137,9 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
  */
 - (void)request:(FBRequest*)request didReceiveResponse:(NSURLResponse*)response {
     NSLog(@"Facebook user didReceiveResponse");
-    [_delegate request:request didReceiveResponse:response];
+    if ([_delegate respondsToSelector:@selector(request:didReceiveResponse:)]) {
+        [_delegate request:request didReceiveResponse:response];
+    }
 }
 
 /**
@@ -130,7 +147,9 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
  */
 - (void)request:(FBRequest*)request didFailWithError:(NSError*)error {
     NSLog(@"Facebook user didFailWithError: %@", error);
-    [_delegate request:request didFailWithError:error];
+    if ([_delegate respondsToSelector:@selector(request:didFailWithError:)]) {
+        [_delegate request:request didFailWithError:error];
+    }
 }
 
 /**
@@ -141,19 +160,31 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
  */
 - (void)request:(FBRequest*)request didLoad:(id)result {
     NSLog(@"Facebook user request didLoad: %@", result);
-    NSMutableArray *fbfriends;
-    
-    if (result && [result count] > 0) {
-        NSLog(@"%d result count", [result count]);
-        fbfriends = [[[NSMutableArray alloc] initWithCapacity:[result count]] autorelease];
-        
-        for (id dictionary in result) {
-            [fbfriends addObject:[[[FBUser alloc] initWithDictionary:dictionary] autorelease]];
+
+    if (result) {
+        if (request.userInfo && request.userInfo == self) {
+            if ([result count] == 1) {
+                [self initValues:[((NSArray*)result) objectAtIndex:0]];
+            }
+        } else {
+            NSMutableArray *fbfriends;
+
+            if ([result count] > 0) {
+                NSLog(@"%d result count", [result count]);
+                fbfriends = [[[NSMutableArray alloc] initWithCapacity:[result count]] autorelease];
+                
+                for (id dictionary in result) {
+                    [fbfriends addObject:[[[FBUser alloc] initWithDictionary:dictionary] autorelease]];
+                }
+            }
+            
+            friends = [NSArray arrayWithArray:fbfriends];
         }
     }
-    
-    friends = [NSArray arrayWithArray:fbfriends];
-    [_delegate request:request didLoad:result];
+
+    if ([_delegate respondsToSelector:@selector(request:didLoad:)]) {
+        [_delegate request:request didLoad:result];
+    }
 }
 
 @end

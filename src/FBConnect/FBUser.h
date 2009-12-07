@@ -22,6 +22,7 @@
     NSString *email;
     NSArray  *friends;
     BOOL      is_app_user;
+    int       _request;
 }
 
 @property (readonly) NSNumber *uid;
@@ -34,6 +35,7 @@
 @property (readonly) NSArray  *friends;
 @property (readonly) BOOL      is_app_user;
 
++ (FBUser *) userForSession:(FBSession *)session andDelegate:(id<FBRequestDelegate>)delegate;
 - (FBUser *) initWithDictionary:(NSDictionary *)data;
 - (NSComparisonResult) nameCompare:(FBUser *) user;
 - (NSComparisonResult) lastFirstCompare:(FBUser *) user;

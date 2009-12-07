@@ -16,6 +16,7 @@
 
 #import "FBConnect/FBSession.h"
 #import "FBConnect/FBRequest.h"
+#import "FBConnect/FBUser.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // global
@@ -34,7 +35,7 @@ static FBSession* sharedSession = nil;
 
 @synthesize delegates = _delegates, apiKey = _apiKey, apiSecret = _apiSecret,
   getSessionProxy = _getSessionProxy, uid = _uid, sessionKey = _sessionKey,
-  sessionSecret = _sessionSecret, expirationDate = _expirationDate;
+  sessionSecret = _sessionSecret, expirationDate = _expirationDate, user = _user;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // class public
@@ -183,6 +184,7 @@ static FBSession* sharedSession = nil;
     _lastRequestTime = nil;
     _requestBurstCount = 0;
     _requestTimer = nil;    
+    _user = nil;
   }
   return self;
 }
@@ -201,6 +203,7 @@ static FBSession* sharedSession = nil;
   [_sessionSecret release];
   [_expirationDate release];
   [_lastRequestTime release];
+  [_user release];
   [super dealloc];
 }
 
@@ -229,7 +232,7 @@ static FBSession* sharedSession = nil;
   [self save];
 }
 
-- (BOOL)resume {
+- (BOOL)resumeWithUser:(BOOL)withUser {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   FBUID uid = [[defaults objectForKey:@"FBUserId"] longLongValue];
   if (uid) {
@@ -240,6 +243,10 @@ static FBSession* sharedSession = nil;
       _sessionSecret = [[defaults stringForKey:@"FBSessionSecret"] copy];
       _expirationDate = [expirationDate retain];
 
+      if (withUser) {
+        _user = [[FBUser userForSession:self andDelegate:nil] retain];
+      }
+
       for (id<FBSessionDelegate> delegate in _delegates) {
         [delegate session:self didLogin:_uid];
       }
@@ -249,6 +256,10 @@ static FBSession* sharedSession = nil;
   return NO;
 }
 
+- (BOOL)resume {
+  return [self resumeWithUser:NO];
+}
+    
 - (void)cancelLogin {
   if (![self isConnected]) {
     for (id<FBSessionDelegate> delegate in _delegates) {
