@@ -29,7 +29,8 @@ static NSString* kStreamURL = @"http://www.facebook.com/connect/prompt_feed.php"
 @synthesize attachment        = _attachment,
 		    actionLinks       = _actionLinks,
             targetId          = _targetId,
-            userMessagePrompt = _userMessagePrompt;
+            userMessagePrompt = _userMessagePrompt,
+			message = _message;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -40,11 +41,13 @@ static NSString* kStreamURL = @"http://www.facebook.com/connect/prompt_feed.php"
 		_actionLinks       = @"";
 		_targetId          = @"";
 		_userMessagePrompt = @"";
+		_message = @"";
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[_message release];
 	[_attachment        release];
 	[_actionLinks       release];
 	[_targetId          release];
@@ -69,6 +72,7 @@ static NSString* kStreamURL = @"http://www.facebook.com/connect/prompt_feed.php"
 								_actionLinks,         @"action_links",
 								_targetId,            @"target_id",
 								_userMessagePrompt,   @"user_message_prompt",
+								_message, @"message",
 								nil];
 	
 	[self loadURL:kStreamURL method:@"POST" get:getParams post:postParams];

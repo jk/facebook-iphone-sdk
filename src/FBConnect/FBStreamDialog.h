@@ -21,7 +21,10 @@
 	NSString* _actionLinks;
 	NSString* _targetId;
 	NSString* _userMessagePrompt;
+	NSString* _message;
 }
+
+@property (nonatomic, copy) NSString *message;
 
 /**
  * A JSON-encoded object containing the text of the post, relevant links, a
