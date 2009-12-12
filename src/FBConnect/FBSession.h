@@ -17,6 +17,7 @@
 #import "FBConnect/FBConnectGlobal.h"
 
 @protocol FBSessionDelegate;
+@protocol FBRequestDelegate;
 @class FBRequest;
 @class FBUser;
 
@@ -158,6 +159,11 @@
  */
 - (void)begin:(FBUID)uid sessionKey:(NSString*)sessionKey sessionSecret:(NSString*)sessionSecret
   expires:(NSDate*)expires;
+
+/**
+ * Request the user information for the current uid
+ */
+- (void)requestUser:(id<FBRequestDelegate>)delegate;
 
 /**
  * Resumes a previous session whose uid, session key, and secret are cached on disk. Also, query the server

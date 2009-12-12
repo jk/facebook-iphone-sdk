@@ -12,13 +12,14 @@
 
 @interface FBUser : NSObject <FBRequestDelegate> {
 @private
-    id<FBRequestDelegate> _delegate;
+    NSMutableDictionary *delegates;
     NSNumber *uid;
     NSString *first_name;
     NSString *last_name;
     NSString *name;
     NSString *username;
     NSString *pic_small;
+    NSString *pic_sm_wl;
     NSString *email;
     NSArray  *friends;
     BOOL      is_app_user;
@@ -31,6 +32,7 @@
 @property (readonly) NSString *name;
 @property (readonly) NSString *username;
 @property (readonly) NSString *pic_small;
+@property (readonly) NSString *pic_small_with_logo;
 @property (readonly) NSString *email;
 @property (readonly) NSArray  *friends;
 @property (readonly) BOOL      is_app_user;

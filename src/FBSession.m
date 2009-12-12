@@ -232,6 +232,10 @@ static FBSession* sharedSession = nil;
   [self save];
 }
 
+- (void)requestUser:(id<FBRequestDelegate>)delegate {
+    _user = [[FBUser userForSession:self andDelegate:delegate] retain];
+}
+
 - (BOOL)resumeWithUser:(BOOL)withUser {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   FBUID uid = [[defaults objectForKey:@"FBUserId"] longLongValue];
@@ -244,7 +248,7 @@ static FBSession* sharedSession = nil;
       _expirationDate = [expirationDate retain];
 
       if (withUser) {
-        _user = [[FBUser userForSession:self andDelegate:nil] retain];
+          [self requestUser:nil];
       }
 
       for (id<FBSessionDelegate> delegate in _delegates) {
