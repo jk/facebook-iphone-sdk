@@ -195,12 +195,10 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
                 result = self;
             }
         } else {
-            NSMutableArray *fbfriends;
+            NSMutableArray *fbfriends = [[NSMutableArray alloc] init];
 
             if ([result count] > 0) {
 //                NSLog(@"%d result count", [result count]);
-                fbfriends = [[[NSMutableArray alloc] initWithCapacity:[result count]] autorelease];
-                
                 for (id dictionary in result) {
                     [fbfriends addObject:[[[FBUser alloc] initWithDictionary:dictionary] autorelease]];
                 }
@@ -208,6 +206,7 @@ static const NSString *userFQL = @"select uid, first_name, last_name, name, pic_
             
             friends = [NSArray arrayWithArray:fbfriends];
             result = friends;
+            [fbfriends release];
         }
     }
 

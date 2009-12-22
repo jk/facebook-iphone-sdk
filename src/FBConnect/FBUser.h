@@ -23,7 +23,6 @@
     NSString *email;
     NSArray  *friends;
     BOOL      is_app_user;
-    int       _request;
 }
 
 @property (readonly) NSNumber *uid;
