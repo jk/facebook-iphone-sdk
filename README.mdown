@@ -3,22 +3,28 @@ Facebook Connect for iPhone
 
 Facebook Connect for iPhone is Objective-C code that lets you connect your users' Facebook accounts with your application.
 
-Adding Connect to your Xcode project
-------------------------------------
+Integrating Connect into your project
+-------------------------------------
 
-To get started, you'll need to add Facebook for Connect for iPhone to your application's Xcode project like so:
+Facebook Connect is compiled as a static library, and the easiest way to add it to your project is to use Xcode's "dependent project" facilities. Here is how:
 
-1. Open the src/FBConnect.xcodeproj project file.
-
-2. Drag the "FBConnect" group into your application's Xcode project.
-
-3. Make sure that the FBConnect headers are in the include path.  Go into your project's settings and enter the relative or absolute path to the "src" directory.
-
-4. Include the FBConnect headers in your code:
-  
-    #import "FBConnect/FBConnect.h"
-  
-You should now be able to compile your project successfully.
+1. Clone the repository and make sure you store it in a permanent place, because Xcode will need to reference the files every time you compile your project.
+2. Drag and drop the "FBConnect.xcodeproj" file under "facebook-iphone-sdk/src" onto the root of your Xcode project's "Groups and Files" sidebar.
+3. A dialog will appear -- make sure "Copy items" is unchecked and "Reference Type" is "Relative to Project" before clicking "Add".
+4. Link the FBConnect static library to your project:
+	* Doubleclick the "FBConnect.xcodeproj" item that has just been added to the sidebar
+	* Go to the "Details" table and you will see a single item: libFBConnect.a.
+	* Check the checkbox on the far right of libFBConnect.a.
+5. Add FBConnect as a dependency of your project, so Xcode compiles it whenever you compile your project:
+	* Expand the "Targets" section of the sidebar and double-click your application's target.
+	* Go to the "General" tab and you will see a "Direct Dependencies" section. 
+	* Click the "+" button, select "FBConnect", and click "Add Target".
+6. Tell your project where to find the FBConnect headers:
+	* Open your "Project Settings" and go to the "Build" tab.
+	* Look for "Header Search Paths" and doubleclick it.
+	* Add the relative path from your project's directory to the "facebook-iphone-sdk/src" directory.
+7. While you are in Project Settings, go to "Other Linker Flags" under the "Linker" section, and add "-ObjC" and "-all_load" to the list of flags.
+8. You're ready to go.  Just #import "FBConnect/FBConnect.h" anywhere you want to use FBConnect classes in your project.
 
 Working with Sessions
 ---------------------
