@@ -15,6 +15,7 @@
 */
 
 #import "FBConnect/FBSession.h"
+#import "FBConnect/FBUser.h"
 #import "FBConnect/FBRequest.h"
 #import "FBConnect/FBLoginButton.h"
 #import "FBConnect/FBLoginDialog.h"
