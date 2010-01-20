@@ -119,7 +119,7 @@ static NSString *userFriendsRequest = @"userFriends";
     return delegate;
 }
 
-- (void) dealloc {
+- (void)dealloc {
     [uid release], uid = nil;
     [firstName release], firstName = nil;
     [lastName release], lastName = nil;
@@ -170,9 +170,13 @@ static NSString *userFriendsRequest = @"userFriends";
         } else if ([request.userInfo isEqualToString:userFriendsRequest]) {
             NSMutableArray *fbfriends = [[NSMutableArray alloc] init];
             for (id dictionary in result) {
-				[fbfriends addObject:[[[FBUser alloc] initWithDictionary:dictionary] autorelease]];
+				FBUser *friend = [[FBUser alloc] initWithDictionary:dictionary];
+				[fbfriends addObject:friend];
+				[friend release];
 			}
-            friends = [NSArray arrayWithArray:fbfriends];
+			[fbfriends sortUsingSelector:@selector(lastFirstCompare:)];
+			[friends release];
+            friends = [[NSArray alloc] initWithArray:fbfriends];
             result = friends;
             [fbfriends release];
         }

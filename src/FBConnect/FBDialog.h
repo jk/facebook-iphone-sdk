@@ -15,6 +15,7 @@
 */
 
 #import "FBConnect/FBConnectGlobal.h"
+#import "FBConnect/FBUser.h"
 
 @protocol FBDialogDelegate;
 @class FBSession;
@@ -133,5 +134,7 @@
  * using [[UIApplication sharedApplication] openURL:].
  */
 - (BOOL)dialog:(FBDialog*)dialog shouldOpenURLInExternalBrowser:(NSURL*)url;
+
+- (void)dialog:(FBDialog *)dialog didSelectUser:(FBUser *)selectedUser;
 
 @end

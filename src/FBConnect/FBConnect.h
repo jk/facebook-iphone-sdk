@@ -21,3 +21,4 @@
 #import "FBConnect/FBLoginDialog.h"
 #import "FBConnect/FBPermissionDialog.h"
 #import "FBConnect/FBStreamDialog.h"
+#import "FBConnect/FBFriendDialog.h"

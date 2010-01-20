@@ -30,7 +30,7 @@ static NSString* kStreamURL = @"http://www.facebook.com/connect/prompt_feed.php"
 		    actionLinks       = _actionLinks,
             targetId          = _targetId,
             userMessagePrompt = _userMessagePrompt,
-			message = _message;
+			message           = _message;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
