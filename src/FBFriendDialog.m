@@ -35,14 +35,20 @@
 	[super dealloc];
 }
 
-- (void)show {
-	[super show];
-	if (!_user.friends) [_user requestFriends:_session withDelegate:self];
+- (void)dialogWillAppear {
 	_tableView.frame = _webView.frame;
+}
+
+- (void)load {
+	if (!_user.friends) {
+		_tableView.hidden = YES;
+		[_user requestFriends:_session withDelegate:self];
+	}
 }
 
 - (void)request:(FBRequest *)request didLoad:(id)result {
 	[_tableView reloadData];
+	_tableView.hidden = NO;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -50,6 +56,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.font = [UIFont systemFontOfSize:15.0];
     }
 	FBUser *friend = [_user.friends objectAtIndex:indexPath.row];
 	cell.textLabel.text = friend.name;
@@ -57,14 +64,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (!_user.friends) return;
 	if ([_delegate respondsToSelector:@selector(dialog:didSelectUser:)]) {
-		FBUser *friend = [_user.friends objectAtIndex:indexPath.row];
-		[_delegate dialog:self didSelectUser:friend];
+		FBUser *user = [_user.friends objectAtIndex:indexPath.row];
+		[_delegate dialog:self didSelectUser:user];
 	}
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	[self dismissWithSuccess:YES animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

@@ -165,13 +165,9 @@ static FBSession* sharedSession = nil;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (FBSession*)initWithKey:(NSString*)key secret:(NSString*)secret
-    getSessionProxy:(NSString*)getSessionProxy {
+- (FBSession*)initWithKey:(NSString*)key secret:(NSString*)secret getSessionProxy:(NSString*)getSessionProxy {
   if (self = [super init]) {
-    if (!sharedSession) {
-      sharedSession = self;
-    }
-    
+    if (!sharedSession) sharedSession = self;
     _delegates = FBCreateNonRetainingArray();    
     _apiKey = [key copy];
     _apiSecret = [secret copy];
@@ -190,10 +186,7 @@ static FBSession* sharedSession = nil;
 }
 
 - (void)dealloc {
-  if (sharedSession == self) {
-    sharedSession = nil;
-  }
-
+  if (sharedSession == self) sharedSession = nil;
   [_delegates release];
   [_requestQueue release];
   [_apiKey release];
@@ -222,13 +215,11 @@ static FBSession* sharedSession = nil;
   return !!_sessionKey;
 }
 
-- (void)begin:(FBUID)uid sessionKey:(NSString*)sessionKey
-    sessionSecret:(NSString*)sessionSecret expires:(NSDate*)expires {
+- (void)begin:(FBUID)uid sessionKey:(NSString*)sessionKey sessionSecret:(NSString*)sessionSecret expires:(NSDate*)expires {
   _uid = uid;
   _sessionKey = [sessionKey copy];
   _sessionSecret = [sessionSecret copy];
   _expirationDate = [expires retain];
-  
   [self save];
 }
 
@@ -246,11 +237,9 @@ static FBSession* sharedSession = nil;
       _sessionKey = [[defaults stringForKey:@"FBSessionKey"] copy];
       _sessionSecret = [[defaults stringForKey:@"FBSessionSecret"] copy];
       _expirationDate = [expirationDate retain];
-
       if (withUser) {
           [self requestUser:nil];
       }
-
       for (id<FBSessionDelegate> delegate in _delegates) {
         [delegate session:self didLogin:_uid];
       }
@@ -261,7 +250,7 @@ static FBSession* sharedSession = nil;
 }
 
 - (BOOL)resume {
-  return [self resumeWithUser:NO];
+	return [self resumeWithUser:NO];
 }
     
 - (void)cancelLogin {
