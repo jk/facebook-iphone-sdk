@@ -24,6 +24,7 @@
 		_tableView.delegate = self;
 		_tableView.dataSource = self;
 		_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_tableView.rowHeight = 36.0;
 		[self addSubview:_tableView];
 	}
 	return self;
@@ -56,7 +57,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont systemFontOfSize:15.0];
+		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
 	FBUser *friend = [_user.friends objectAtIndex:indexPath.row];
 	cell.textLabel.text = friend.name;
