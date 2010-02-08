@@ -232,10 +232,6 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
 - (void)connect {
   FBLOG(@"Connecting to %@ %@", _url, _params);
 
-  if ([_delegate respondsToSelector:@selector(requestLoading:)]) {
-    [_delegate requestLoading:self];
-  }
-
   NSString* url = _method ? _url : [self generateGetURL];
   NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                   cachePolicy:NSURLRequestReloadIgnoringLocalCacheData 
@@ -252,6 +248,10 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
     [request setHTTPBody:[self generatePostBody]];
   }
   
+  if ([_delegate respondsToSelector:@selector(requestLoading:)]) {
+    [_delegate requestLoading:self];
+  }
+
   _timestamp = [[NSDate date] retain];
   _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
