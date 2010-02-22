@@ -41,6 +41,10 @@
 }
 
 - (void)load {
+	if (!_user) {
+		[_session requestUser:nil];
+		_user = _session.user;
+	}
 	if (!_user.friends) {
 		_tableView.hidden = YES;
 		[_user requestFriends:_session withDelegate:self];
