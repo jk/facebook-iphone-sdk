@@ -165,7 +165,8 @@ static NSString *userFriendsRequest = @"userFriends";
 - (void)request:(FBRequest*)request didLoad:(id)result {
     if (result) {
         if ([request.userInfo isEqualToString:userDetailsRequest]) {
-            [self initValues:[((NSArray*)result) objectAtIndex:0]];
+            NSArray *array = (NSArray*)result;
+            if ([array count] == 1) [self initValues:[array objectAtIndex:0]];
             result = self;
         } else if ([request.userInfo isEqualToString:userFriendsRequest]) {
             NSMutableArray *fbfriends = [[NSMutableArray alloc] init];
