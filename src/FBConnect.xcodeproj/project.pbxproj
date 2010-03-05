@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5530E24B1141664B004E436A /* FBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5530E2491141664B004E436A /* FBCell.m */; };
+		5530E24E1141667A004E436A /* FBCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530E24D1141667A004E436A /* FBCell.h */; };
 		6F199B39110643DD00A91EA7 /* FBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F199B38110643DD00A91EA7 /* FBUser.m */; };
 		6F199B3B110643E900A91EA7 /* FBUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F199B3A110643E900A91EA7 /* FBUser.h */; };
 		6F6410E511079A4F0057CDB6 /* FBFriendDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6410E311079A4F0057CDB6 /* FBFriendDialog.m */; };
@@ -45,6 +47,8 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5530E2491141664B004E436A /* FBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBCell.m; sourceTree = "<group>"; };
+		5530E24D1141667A004E436A /* FBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBCell.h; path = FBConnect/FBCell.h; sourceTree = "<group>"; };
 		6F199B38110643DD00A91EA7 /* FBUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBUser.m; sourceTree = SOURCE_ROOT; };
 		6F199B3A110643E900A91EA7 /* FBUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBUser.h; path = FBConnect/FBUser.h; sourceTree = SOURCE_ROOT; };
 		6F6410E311079A4F0057CDB6 /* FBFriendDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBFriendDialog.m; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 				BECB0ADC0F56C8930037C6F1 /* FBXMLHandler.m */,
 				BE621DE80F6888820004CBDF /* FBLoginButton.h */,
 				BE621DE60F68887D0004CBDF /* FBLoginButton.m */,
+				5530E24D1141667A004E436A /* FBCell.h */,
+				5530E2491141664B004E436A /* FBCell.m */,
 				BECB0AE70F56C8A70037C6F1 /* FBDialog.h */,
 				BECB0ADF0F56C89D0037C6F1 /* FBDialog.m */,
 				BECB0AE90F56C8A70037C6F1 /* FBLoginDialog.h */,
@@ -181,6 +187,7 @@
 				EA1F8FC710F30EC0003E6787 /* FBJSON.h in Headers */,
 				6F199B3B110643E900A91EA7 /* FBUser.h in Headers */,
 				6F6410FE11079C020057CDB6 /* FBFriendDialog.h in Headers */,
+				5530E24E1141667A004E436A /* FBCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +245,7 @@
 				EA1F8FC510F30EAE003E6787 /* FBJSON.m in Sources */,
 				6F199B39110643DD00A91EA7 /* FBUser.m in Sources */,
 				6F6410E511079A4F0057CDB6 /* FBFriendDialog.m in Sources */,
+				5530E24B1141664B004E436A /* FBCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
